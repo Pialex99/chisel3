@@ -15,6 +15,7 @@ object Methodology extends Enumeration {
   val NonInstantiated = Value("nonInstantiated")
   val Combinatorial = Value("combinatorial")
   val MemoryInduction = Value("memoryInduction")
+  val LoopInvariant = Value("loopInvariant")
 }
 
 package object verification {

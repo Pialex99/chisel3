@@ -137,6 +137,7 @@ private[chisel3] object Converter {
         case Methodology.NonInstantiated => fir.Methodology.NonInstantiated
         case Methodology.Combinatorial => fir.Methodology.Combinatorial
         case Methodology.MemoryInduction => fir.Methodology.MemoryInduction
+        case Methodology.LoopInvariant => fir.Methodology.LoopInvariant
       }
       Some(fir.Verification(firOp, convert(info), convert(clk, ctx),
         convert(pred, ctx), firrtl.Utils.one, fir.StringLit(msg), firMtd))
