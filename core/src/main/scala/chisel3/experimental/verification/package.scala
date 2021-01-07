@@ -16,6 +16,7 @@ object Methodology extends Enumeration {
   val Combinatorial = Value("combinatorial")
   val MemoryInduction = Value("memoryInduction")
   val LoopInvariant = Value("loopInvariant")
+  val BoundedModelCheck = Value("boundedModelCheck")
 }
 
 package object verification {
@@ -28,54 +29,54 @@ package object verification {
     }
   }
   object assert {
-    def apply(predicate: Bool, msg: String = "", mtd: Methodology.Value = Methodology.NonInstantiated)(
+    def apply(predicate: Bool, msg: String = "", mtd: Methodology.Value = Methodology.NonInstantiated, id: String = "", deps: List[String] = Nil)(
       implicit sourceInfo: SourceInfo,
       compileOptions: CompileOptions): Unit = {
       val clock = Builder.forcedClock
       pushCommand(Verification(Formal.Assert, sourceInfo, clock.ref,
-        predicate.ref, msg, mtd))
+        predicate.ref, msg, mtd, id, deps))
     }
   }
 
   object assume {
-    def apply(predicate: Bool, msg: String = "", mtd: Methodology.Value = Methodology.NonInstantiated)(
+    def apply(predicate: Bool, msg: String = "", mtd: Methodology.Value = Methodology.NonInstantiated, id: String = "", deps: List[String] = Nil)(
       implicit sourceInfo: SourceInfo,
       compileOptions: CompileOptions): Unit = {
       val clock = Builder.forcedClock
       pushCommand(Verification(Formal.Assume, sourceInfo, clock.ref,
-        predicate.ref, msg, mtd))
+        predicate.ref, msg, mtd, id, deps))
     }
   }
 
   object cover {
-    def apply(predicate: Bool, msg: String = "", mtd: Methodology.Value = Methodology.NonInstantiated)(
+    def apply(predicate: Bool, msg: String = "", mtd: Methodology.Value = Methodology.NonInstantiated, id: String = "", deps: List[String] = Nil)(
       implicit sourceInfo: SourceInfo,
       compileOptions: CompileOptions): Unit = {
       val clock = Builder.forcedClock
       pushCommand(Verification(Formal.Cover, sourceInfo, clock.ref,
-        predicate.ref, msg, mtd))
+        predicate.ref, msg, mtd, id, deps))
     }
   }
 
   object require {
-    def apply(predicate: Bool, msg: String = "", mtd: Methodology.Value = Methodology.NonInstantiated)(
+    def apply(predicate: Bool, msg: String = "", mtd: Methodology.Value = Methodology.NonInstantiated, id: String = "", deps: List[String] = Nil)(
       implicit sourceInfo: SourceInfo,
       compileOptions: CompileOptions): Unit = {
       val clock = Builder.forcedClock
       //push an assume to the parent
       
       pushCommand(Verification(Formal.Require, sourceInfo, clock.ref,
-        predicate.ref, msg, mtd))
+        predicate.ref, msg, mtd, id, deps))
     }
   }
 
   object ensure {
-    def apply(predicate: Bool, msg: String = "", mtd: Methodology.Value = Methodology.NonInstantiated)(
+    def apply(predicate: Bool, msg: String = "", mtd: Methodology.Value = Methodology.NonInstantiated, id: String = "", deps: List[String] = Nil)(
       implicit sourceInfo: SourceInfo,
       compileOptions: CompileOptions): Unit = {
       val clock = Builder.forcedClock
       pushCommand(Verification(Formal.Ensure, sourceInfo, clock.ref,
-        predicate.ref, msg, mtd))
+        predicate.ref, msg, mtd, id, deps))
     }
   }
 }

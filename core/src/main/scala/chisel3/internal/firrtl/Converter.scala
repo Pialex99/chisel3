@@ -125,7 +125,7 @@ private[chisel3] object Converter {
       val (fmt, args) = unpack(pable, ctx)
       Some(fir.Print(convert(info), fir.StringLit(fmt),
                      args.map(a => convert(a, ctx)), convert(clock, ctx), firrtl.Utils.one))
-    case Verification(op, info, clk, pred, msg, mtd) =>
+    case Verification(op, info, clk, pred, msg, mtd, id, deps) =>
       val firOp = op match {
         case Formal.Assert => fir.Formal.Assert
         case Formal.Assume => fir.Formal.Assume
@@ -138,9 +138,10 @@ private[chisel3] object Converter {
         case Methodology.Combinatorial => fir.Methodology.Combinatorial
         case Methodology.MemoryInduction => fir.Methodology.MemoryInduction
         case Methodology.LoopInvariant => fir.Methodology.LoopInvariant
+        case Methodology.BoundedModelCheck => fir.Methodology.BoundedModelCheck
       }
       Some(fir.Verification(firOp, convert(info), convert(clk, ctx),
-        convert(pred, ctx), firrtl.Utils.one, fir.StringLit(msg), firMtd))
+        convert(pred, ctx), firrtl.Utils.one, fir.StringLit(msg), firMtd, fir.StringLit(id), deps.map(fir.StringLit(_))))
     case _ => None
   }
 
